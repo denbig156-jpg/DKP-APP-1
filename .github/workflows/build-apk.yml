@@ -1,0 +1,49 @@
+name: Build Android APK (OmniRotate 4-Way)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./android-apk-project
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.5'
+
+      - name: Build Ready-to-Install APK
+        run: gradle assembleDebug
+
+      - name: Upload APK to Workflow Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OmniRotate-4Way-APK
+          path: android-apk-project/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Publish APK to GitHub Releases (One-Tap Mobile Download)
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "OmniRotate 4-Way APK (Build #${{ github.run_number }})"
+          body: "แตะที่ไฟล์ **app-debug.apk** ด้านล่างเพื่อดาวน์โหลดและติดตั้งลงมือถือ Android ได้ทันที"
+          files: android-apk-project/app/build/outputs/apk/debug/app-debug.apk

@@ -1,0 +1,6 @@
+{
+  "name": "OmniRotate 4-Way Screen Rotation & APK Studio",
+  "description": "ระบบควบคุมการหมุนหน้าจอโทรศัพท์ครบ 4 ทิศทาง (0°, 90°, 180° กลับหัว, 270°) ทับทุกแอปและเวลาดูหนัง พร้อมดาวน์โหลดโปรเจกต์สร้างไฟล์ Android .APK (WindowManager Overlay Service)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
